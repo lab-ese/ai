@@ -1,0 +1,44 @@
+1. PSEUDO PY CODE:
+import heapq
+
+def best_first_search(start_state):
+    pq = []
+    heapq.heappush(pq, (heuristic(start_state), start_state))
+    visited = set()
+    
+    while pq:
+        h, current = heapq.heappop(pq)
+        
+        if is_goal(current):
+            return "Goal Reached"
+            
+        visited.add(current)
+        
+        for neighbor in generate_neighbors(current):
+            if neighbor not in visited:
+                heapq.heappush(pq, (heuristic(neighbor), neighbor))
+
+2. ALGORITHM IN STEPS:
+Step 1: Initialize a Priority Queue (PQ) to store states based on their heuristic score (lowest score first).
+Step 2: Push the initial state into the PQ. Initialize a 'visited' set.
+Step 3: Pop the state with the lowest heuristic from the PQ.
+Step 4: Check if it is the goal state. If yes, stop.
+Step 5: Add the current state to the visited set.
+Step 6: Generate all valid neighbor states (sliding the empty tile).
+Step 7: For each neighbor, if it hasn't been visited, calculate its heuristic and push it into the PQ.
+Step 8: Repeat from Step 3 until PQ is empty.
+
+3. DETAILED DRY RUN:
+Initial State (Start): H = 4. PQ = [(4, Start)]
+Pop Start. Neighbors:
+- Move Up: H = 5
+- Move Down: H = 3
+Push neighbors. PQ = [(3, State_Down), (5, State_Up)].
+
+Pop State_Down (H=3). Neighbors:
+- Move Left: H = 2
+- Move Right: H = 4
+Push neighbors. PQ = [(2, State_Left), (4, State_Right), (5, State_Up)].
+
+Pop State_Left (H=2).
+This process continues globally picking the most promising node across the entire frontier, unlike Hill Climbing which only looks locally.

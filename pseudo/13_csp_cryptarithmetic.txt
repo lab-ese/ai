@@ -1,0 +1,48 @@
+1. PSEUDO PY CODE:
+def solve_cryptarithmetic(letters, index, assigned_digits, used_digits):
+    if index == len(letters):
+        return is_valid_equation(assigned_digits)
+        
+    current_letter = letters[index]
+    
+    for digit in range(10):
+        if digit not in used_digits:
+            if digit == 0 and is_first_letter(current_letter):
+                continue # First letters can't be 0
+                
+            assigned_digits[current_letter] = digit
+            used_digits.add(digit)
+            
+            if solve_cryptarithmetic(letters, index + 1, assigned_digits, used_digits):
+                return True
+                
+            # Backtrack
+            del assigned_digits[current_letter]
+            used_digits.remove(digit)
+            
+    return False
+
+2. ALGORITHM IN STEPS:
+Step 1: Extract all unique letters from the puzzle equation.
+Step 2: Use a recursive backtracking function to assign digits to letters.
+Step 3: Base Case: If all letters have digits, evaluate the arithmetic expression. If mathematically correct, return True.
+Step 4: Recursive Step: Take the next unassigned letter.
+Step 5: Iterate digits from 0 to 9.
+Step 6: If the digit is not already used by another letter, and does not violate the "no leading zero" rule, assign it to the current letter.
+Step 7: Recursively call the function for the next letter.
+Step 8: If the recursive call returns False, backtrack (unassign the digit and free it up), then try the next digit.
+Step 9: If all digits fail, return False.
+
+3. DETAILED DRY RUN:
+Equation: TO + GO = OUT. Unique letters: T, O, G, U.
+Assign T=1.
+Assign O=2.
+Assign G=3.
+Assign U=4.
+Check Base Case: 12 + 32 == 24? No (44 != 24).
+Backtrack U. Try U=5, U=6... all fail.
+Backtrack G. Try G=4...
+Eventually reaching T=2, O=1.
+G=8, U=0.
+Check: 21 + 81 = 102.
+Does OUT (102) equal TO(21) + GO(81)? Yes! Solution found.

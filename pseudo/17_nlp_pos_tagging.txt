@@ -1,0 +1,36 @@
+1. PSEUDO PY CODE:
+import nltk
+
+def pos_tagging(sentence):
+    # Split sentence into words
+    tokens = nltk.word_tokenize(sentence)
+    
+    # Pass tokens to the pre-trained tagging model
+    tagged_words = nltk.pos_tag(tokens)
+    
+    for word, tag in tagged_words:
+        print(f"{word} -> {tag}")
+
+2. ALGORITHM IN STEPS:
+Step 1: Import a natural language processing library (like NLTK).
+Step 2: Accept a string sentence as input.
+Step 3: Tokenization: Break the continuous string down into a list of individual words and punctuation marks (tokens).
+Step 4: Part-of-Speech Tagging: Feed the token list into a pre-trained statistical model (like an Averaged Perceptron).
+Step 5: The model analyzes the context and assigns a grammatical tag (e.g., Noun, Verb, Adjective) to each token.
+Step 6: Iterate through the output and display the Word alongside its Tag.
+
+3. DETAILED DRY RUN:
+Input String: "The fast dog ran."
+Step 3 (Tokenization) Result: ["The", "fast", "dog", "ran", "."]
+Step 4 (Tagging) Analysis:
+- "The": Detected as a Determiner (DT).
+- "fast": Detected modifying a noun, assigned Adjective (JJ).
+- "dog": Detected as the subject, assigned Noun (NN).
+- "ran": Detected as action, assigned Verb Past Tense (VBD).
+- ".": Assigned Punctuation (.).
+Output:
+The -> DT
+fast -> JJ
+dog -> NN
+ran -> VBD
+. -> .

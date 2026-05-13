@@ -1,0 +1,45 @@
+1. PSEUDO PY CODE:
+import heapq
+
+def a_star_cities(start, goal, graph, heuristics):
+    pq = []
+    heapq.heappush(pq, (heuristics[start], 0, start))
+    g_costs = {start: 0}
+    
+    while pq:
+        f, g, current = heapq.heappop(pq)
+        
+        if current == goal:
+            return "Shortest Route Found"
+            
+        for neighbor, road_distance in graph[current]:
+            new_g = g + road_distance
+            if neighbor not in g_costs or new_g < g_costs[neighbor]:
+                g_costs[neighbor] = new_g
+                f_score = new_g + heuristics[neighbor]
+                heapq.heappush(pq, (f_score, new_g, neighbor))
+
+2. ALGORITHM IN STEPS:
+Step 1: Graph edges have actual road distances. Heuristic is straight-line distance. f(n) = g(n) + h(n).
+Step 2: Add Start city to PQ with g=0.
+Step 3: Pop city with lowest f-score.
+Step 4: If it is the Goal city, stop.
+Step 5: For each connected neighboring city, calculate new_g = current_g + road_distance.
+Step 6: If this new_g is strictly better than any previously recorded g-cost for that neighbor, update it.
+Step 7: Calculate f_score = new_g + heuristic of neighbor.
+Step 8: Push to PQ. Repeat from Step 3.
+
+3. DETAILED DRY RUN:
+Start: Arad. Goal: Bucharest.
+Arad: g=0, h=366 -> f=366.
+Pop Arad. Neighbors:
+- Sibiu: road=140. new_g=140. h=253. f=393.
+- Timisoara: road=118. new_g=118. h=329. f=447.
+PQ = [(f=393, Sibiu), (f=447, Timisoara)]
+
+Pop Sibiu. Neighbors:
+- Fagaras: road=99. new_g=140+99=239. h=176. f=415.
+- Rimnicu: road=80. new_g=140+80=220. h=193. f=413.
+PQ = [(f=413, Rimnicu), (f=415, Fagaras), (f=447, Timisoara)]
+
+A* explores Rimnicu first since its combination of actual road traveled + estimated distance left is the lowest!

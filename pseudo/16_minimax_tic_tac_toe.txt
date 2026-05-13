@@ -1,0 +1,44 @@
+1. PSEUDO PY CODE:
+def minimax(board, is_maximizing):
+    if check_win(board, "O"): return 10
+    if check_win(board, "X"): return -10
+    if check_draw(board): return 0
+    
+    if is_maximizing:
+        best_score = -float('inf')
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "O"
+                score = minimax(board, False)
+                board[i] = " "
+                best_score = max(score, best_score)
+        return best_score
+    else:
+        best_score = float('inf')
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "X"
+                score = minimax(board, True)
+                board[i] = " "
+                best_score = min(score, best_score)
+        return best_score
+
+2. ALGORITHM IN STEPS:
+Step 1: Minimax is a recursive algorithm that simulates all possible futures of a game.
+Step 2: Base Cases: If the board is in a win state for AI, return +10. If human wins, return -10. If draw, return 0.
+Step 3: Maximizing Player (AI 'O'): Iterate over all empty spots. Place 'O' and recursively call Minimax as the Minimizing player. Backtrack (remove 'O'). Find the maximum score among all simulated moves.
+Step 4: Minimizing Player (Human 'X'): Iterate over all empty spots. Place 'X' and recursively call Minimax as Maximizing player. Backtrack. Find the minimum score among all simulated moves.
+Step 5: The main function uses this to test every available move on the real board and picks the one that returns the highest Minimax score.
+
+3. DETAILED DRY RUN:
+Board has 2 empty spots left. It is AI 'O' turn.
+AI evaluates Spot 1:
+- Places 'O' in Spot 1.
+- Recursion passes to Minimizing Player (Human).
+- Human places 'X' in Spot 2 and wins. Minimax returns -10.
+AI evaluates Spot 2:
+- Places 'O' in Spot 2.
+- Recursion passes to Minimizing Player.
+- Human places 'X' in Spot 1 resulting in a Draw. Minimax returns 0.
+AI compares scores: max(-10, 0) is 0.
+AI chooses Spot 2 to force a draw rather than letting the human win.

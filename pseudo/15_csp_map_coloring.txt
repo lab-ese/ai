@@ -1,0 +1,48 @@
+1. PSEUDO PY CODE:
+def color_map(regions, index, colors, assignment):
+    if index == len(regions):
+        return True
+        
+    current_region = regions[index]
+    
+    for color in colors:
+        if is_valid(current_region, color, assignment):
+            assignment[current_region] = color
+            
+            if color_map(regions, index + 1, colors, assignment):
+                return True
+                
+            # Backtrack
+            del assignment[current_region]
+            
+    return False
+
+def is_valid(region, color, assignment):
+    for neighbor in region.neighbors:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+2. ALGORITHM IN STEPS:
+Step 1: Model the map as a graph where states are nodes and borders are edges connecting them.
+Step 2: Base Case: If all regions have a color assigned, return True.
+Step 3: Pick the next uncolored region.
+Step 4: Iterate through the available colors (e.g., Red, Green, Blue).
+Step 5: Check Constraint: Look at all neighboring regions. If any neighbor already has the chosen color, the color is invalid.
+Step 6: If valid, assign the color to the region.
+Step 7: Recursively call the function to color the next region.
+Step 8: If the recursive call fails, backtrack: remove the color assignment and try the next color.
+
+3. DETAILED DRY RUN:
+Map: WA connected to NT. SA connected to WA and NT.
+Colors: R, G, B.
+Start with WA.
+Try Red for WA. Valid. Assignment: {WA: R}.
+Next is NT.
+Try Red for NT. Conflict with WA.
+Try Green for NT. Valid. Assignment: {WA: R, NT: G}.
+Next is SA.
+Try Red for SA. Conflict with WA.
+Try Green for SA. Conflict with NT.
+Try Blue for SA. Valid. Assignment: {WA: R, NT: G, SA: B}.
+All regions colored without any borders sharing the same color!

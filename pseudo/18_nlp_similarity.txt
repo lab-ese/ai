@@ -1,0 +1,49 @@
+1. PSEUDO PY CODE:
+import math
+from collections import Counter
+
+def calculate_similarity(text1, text2):
+    tokens1 = text1.lower().split()
+    tokens2 = text2.lower().split()
+    
+    freq1 = Counter(tokens1)
+    freq2 = Counter(tokens2)
+    
+    # Cosine Similarity
+    all_words = set(freq1.keys()).union(set(freq2.keys()))
+    dot_product = sum(freq1.get(w, 0) * freq2.get(w, 0) for w in all_words)
+    mag1 = math.sqrt(sum(v**2 for v in freq1.values()))
+    mag2 = math.sqrt(sum(v**2 for v in freq2.values()))
+    cosine = dot_product / (mag1 * mag2)
+    
+    # Jaccard Similarity
+    set1, set2 = set(tokens1), set(tokens2)
+    intersection = len(set1.intersection(set2))
+    union = len(set1.union(set2))
+    jaccard = intersection / union
+    
+    return cosine, jaccard
+
+2. ALGORITHM IN STEPS:
+Step 1: Convert both input texts to lowercase and split them into lists of words (tokens).
+Step 2: Cosine Similarity: Calculate the frequency of each word in both texts.
+Step 3: Calculate the dot product by multiplying frequencies of matching words and summing them up.
+Step 4: Calculate the magnitude of both frequency vectors (square root of sum of squared frequencies).
+Step 5: Divide dot product by the product of magnitudes.
+Step 6: Jaccard Similarity: Convert both token lists into mathematical Sets (removes duplicates).
+Step 7: Find the Intersection (count of common words) and Union (count of total unique words).
+Step 8: Divide Intersection by Union.
+
+3. DETAILED DRY RUN:
+Text 1: "apple banana"
+Text 2: "banana cherry"
+Freq1: {"apple":1, "banana":1}. Freq2: {"banana":1, "cherry":1}
+Cosine:
+- Dot Product: (1*0) + (1*1) + (0*1) = 1
+- Mag1: sqrt(1^2 + 1^2) = 1.414. Mag2: 1.414.
+- Cosine = 1 / (1.414 * 1.414) = 0.5
+Jaccard:
+- Set1: {"apple", "banana"}, Set2: {"banana", "cherry"}
+- Intersection: {"banana"} -> size 1
+- Union: {"apple", "banana", "cherry"} -> size 3
+- Jaccard = 1 / 3 = 0.333

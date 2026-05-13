@@ -1,0 +1,44 @@
+1. PSEUDO PY CODE:
+def hill_climbing(current_state):
+    while True:
+        neighbors = generate_neighbors(current_state)
+        best_neighbor = None
+        min_heuristic = float('inf')
+        
+        for neighbor in neighbors:
+            h = calculate_heuristic(neighbor)
+            if h < min_h:
+                min_h = h
+                best_neighbor = neighbor
+                
+        if calculate_heuristic(current_state) <= min_h:
+            print("Local Optima Reached")
+            return current_state
+            
+        current_state = best_neighbor
+
+2. ALGORITHM IN STEPS:
+Step 1: Define a heuristic function (e.g., Manhattan distance of all tiles to their goal).
+Step 2: Start with the initial puzzle state as the 'current_state'.
+Step 3: Generate all possible neighbor states by moving the empty space (Up, Down, Left, Right).
+Step 4: Evaluate the heuristic score for each neighbor.
+Step 5: Find the neighbor with the absolute lowest heuristic score.
+Step 6: If this best neighbor has a score greater than or equal to the current state's score, STOP. We are at a local maximum (or minimum in terms of distance).
+Step 7: Otherwise, update current_state to be this best neighbor and repeat from Step 3.
+
+3. DETAILED DRY RUN:
+Initial State: H_score = 5.
+Empty space moves: Left, Right, Down.
+Neighbors generated:
+- Neighbor 1 (Left): H_score = 6
+- Neighbor 2 (Right): H_score = 4
+- Neighbor 3 (Down): H_score = 5
+
+Compare: The best neighbor is Neighbor 2 with H=4.
+Since 4 < 5, we accept the move. current_state = Neighbor 2.
+
+Next iteration:
+Current State: H_score = 4.
+Neighbors generated: H=5, H=4, H=6.
+Lowest neighbor H is 4.
+Since 4 is NOT strictly less than current_state H (4), the algorithm halts. It cannot find a better uphill move.

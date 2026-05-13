@@ -1,0 +1,46 @@
+1. PSEUDO PY CODE:
+import heapq
+
+def a_star_puzzle(start_state):
+    pq = []
+    # pq stores (f_score, g_score, state)
+    heapq.heappush(pq, (0 + heuristic(start_state), 0, start_state))
+    g_costs = {start_state: 0}
+    
+    while pq:
+        f, g, current = heapq.heappop(pq)
+        
+        if is_goal(current):
+            return "Optimal Solution Found"
+            
+        for neighbor in generate_neighbors(current):
+            new_g = g + 1
+            if neighbor not in g_costs or new_g < g_costs[neighbor]:
+                g_costs[neighbor] = new_g
+                f_score = new_g + heuristic(neighbor)
+                heapq.heappush(pq, (f_score, new_g, neighbor))
+
+2. ALGORITHM IN STEPS:
+Step 1: Define the evaluation function f(n) = g(n) + h(n), where g is the number of steps taken, and h is the Manhattan distance heuristic.
+Step 2: Initialize a Priority Queue (PQ) and push the start state with g=0 and f=h. Keep a dictionary of lowest g-costs for states.
+Step 3: Pop the state with the lowest f(n) from the PQ.
+Step 4: If it's the goal state, stop (optimal path guaranteed).
+Step 5: Generate neighbor states (sliding the tile).
+Step 6: For each neighbor, calculate new_g = current_g + 1.
+Step 7: If the neighbor has never been seen, or we found a shorter path (lower g) to it, record its new g-cost.
+Step 8: Calculate f_score = new_g + h(neighbor) and push to PQ.
+Step 9: Repeat Step 3 until PQ is empty.
+
+3. DETAILED DRY RUN:
+Start State: g=0, h=4, f=4. PQ = [(f=4, g=0, Start)]
+Pop Start. Generates N1, N2.
+- N1: g=1, h=3 -> f=4. 
+- N2: g=1, h=5 -> f=6.
+PQ = [(f=4, N1), (f=6, N2)]
+
+Pop N1. Generates N3, N4.
+- N3: g=2, h=2 -> f=4.
+- N4: g=2, h=4 -> f=6.
+PQ = [(f=4, N3), (f=6, N2), (f=6, N4)].
+
+A* avoids deep paths that only 'look' good initially because the g(n) component steadily increases, forcing it to explore broader options if a path gets too long.

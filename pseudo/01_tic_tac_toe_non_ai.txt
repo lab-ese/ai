@@ -1,0 +1,38 @@
+1. PSEUDO PY CODE:
+def play_tic_tac_toe():
+    board = [" "] * 9
+    for turn in range(9):
+        if turn % 2 == 0:
+            move = get_human_move(board)
+            board[move] = "X"
+        else:
+            move = get_computer_move(board)
+            board[move] = "O"
+            
+        if check_winner(board):
+            print("Winner!")
+            return
+    print("Draw")
+
+def get_computer_move(board):
+    if can_win(board, "O"): return win_move
+    if can_win(board, "X"): return block_move
+    if board[4] == " ": return 4
+    if available_corner(board): return corner_move
+    return edge_move
+
+2. ALGORITHM IN STEPS:
+Step 1: Initialize an empty board array of size 9.
+Step 2: Loop 9 times (max turns in Tic-Tac-Toe).
+Step 3: On even turns, prompt the human player for a move and place 'X'.
+Step 4: On odd turns, use a rule-based system for the computer to pick a move and place 'O'. The rules (in order) are: Win, Block, Center, Corner, Edge.
+Step 5: After every turn, check if the current player has won by checking all rows, columns, and diagonals.
+Step 6: If all 9 turns complete without a winner, declare a draw.
+
+3. DETAILED DRY RUN:
+Initial State: Board is fully empty.
+Turn 1 (Human): Human inputs '4' (Center). Board[4] = 'X'.
+Turn 2 (Computer): Computer checks rules. Cannot win, cannot block. Center is taken. Rule 4 triggers: picks an empty corner (e.g., '0'). Board[0] = 'O'.
+Turn 3 (Human): Human inputs '8' (Corner). Board[8] = 'X'.
+Turn 4 (Computer): Computer checks Rule 2 (Block). Human has 'X' at 4 and 8, threatening to win at 0. But computer 'O' is already at 0. So no immediate threat on that diagonal. It checks other lines, finds no threats. Picks another corner, e.g., '2'. Board[2] = 'O'.
+(Process continues until win/draw).

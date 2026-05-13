@@ -1,0 +1,48 @@
+1. PSEUDO PY CODE:
+def generate_magic_square(n):
+    matrix = [[0] * n for _ in range(n)]
+    row, col = 0, n // 2
+    
+    for num in range(1, n * n + 1):
+        matrix[row][col] = num
+        next_row, next_col = row - 1, col + 1
+        
+        if next_row < 0 and next_col == n:
+            next_row, next_col = row + 1, col
+        elif next_row < 0:
+            next_row = n - 1
+        elif next_col == n:
+            next_col = 0
+            
+        if matrix[next_row][next_col] != 0:
+            next_row, next_col = row + 1, col
+            
+        row, col = next_row, next_col
+    return matrix
+
+2. ALGORITHM IN STEPS:
+Step 1: Initialize an empty NxN matrix with zeros (N must be odd).
+Step 2: Start at the middle of the top row: row = 0, col = N/2.
+Step 3: Loop from num = 1 to N*N.
+Step 4: Place 'num' at matrix[row][col].
+Step 5: Calculate the next position by moving Up-Right (row-1, col+1).
+Step 6: Handle boundary wraps: If row goes above 0, wrap to the bottom (N-1). If col goes beyond right edge, wrap to left (0). If both wrap simultaneously, move down one row instead.
+Step 7: Handle collisions: If the calculated next position already contains a number, move down one row from the ORIGINAL position.
+Step 8: Update row and col and repeat.
+
+3. DETAILED DRY RUN:
+Problem: 3x3 Magic Square
+Initial State: All 0s. Start at (0,1).
+Num=1: Placed at (0,1). Next pos (-1,2) -> wraps to (2,2).
+Num=2: Placed at (2,2). Next pos (1,3) -> wraps to (1,0).
+Num=3: Placed at (1,0). Next pos (0,1) -> Collision! It has '1'. Move down from (1,0) -> (2,0).
+Num=4: Placed at (2,0). Next pos (1,1).
+Num=5: Placed at (1,1). Next pos (0,2).
+Num=6: Placed at (0,2). Next pos (-1,3) -> Double wrap! Move down from (0,2) -> (1,2).
+Num=7: Placed at (1,2). Next pos (0,3) -> wraps to (0,0).
+Num=8: Placed at (0,0). Next pos (-1,1) -> wraps to (2,1).
+Num=9: Placed at (2,1).
+Final Matrix:
+8 1 6
+3 5 7
+4 9 2

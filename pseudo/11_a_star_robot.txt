@@ -1,0 +1,54 @@
+1. PSEUDO PY CODE:
+import heapq
+
+def a_star_robot(start, goal):
+    pq = []
+    heapq.heappush(pq, (heuristic(start, goal), 0, start))
+    g_costs = {start: 0}
+    
+    while pq:
+        f, g, current = heapq.heappop(pq)
+        
+        if current == goal:
+            return "Optimal Path Found"
+            
+        for neighbor in get_adjacent(current):
+            if is_obstacle(neighbor): continue
+            
+            new_g = g + 1
+            if neighbor not in g_costs or new_g < g_costs[neighbor]:
+                g_costs[neighbor] = new_g
+                f_score = new_g + heuristic(neighbor, goal)
+                heapq.heappush(pq, (f_score, new_g, neighbor))
+
+2. ALGORITHM IN STEPS:
+Step 1: Set up grid. Define f(n) = g(n) + h(n), where g=steps taken, h=Manhattan distance.
+Step 2: Add Start node to PQ with g=0. Track lowest g-costs in a dictionary.
+Step 3: Pop node with lowest f-score.
+Step 4: If node is Goal, stop.
+Step 5: Get Valid Adjacent nodes (Up, Down, Left, Right) that are not obstacles.
+Step 6: Calculate new_g = current_g + 1 for neighbors.
+Step 7: If a neighbor is unvisited or we found a shorter route to it, update its g-cost.
+Step 8: Push neighbor to PQ with calculated f-score.
+Step 9: Repeat from Step 3.
+
+3. DETAILED DRY RUN:
+Grid: Start(0,0), Goal(2,2). Obstacle at (1,1).
+Start: g=0, h=4, f=4. PQ=[(f=4, Start)]
+
+Pop Start. Neighbors:
+-(0,1): g=1, h=3, f=4.
+-(1,0): g=1, h=3, f=4.
+PQ=[(f=4, (0,1)), (f=4, (1,0))]
+
+Pop (0,1). Neighbors:
+-(0,2): g=2, h=2, f=4.
+-(1,1): Obstacle!
+PQ=[(f=4, (0,2)), (f=4, (1,0))]
+
+Pop (0,2). Neighbors:
+-(1,2): g=3, h=1, f=4.
+PQ=[(f=4, (1,2)), (f=4, (1,0))]
+
+Pop (1,2). Neighbors:
+-(2,2): g=4, h=0, f=4. Goal Reached!

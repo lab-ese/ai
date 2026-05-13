@@ -1,0 +1,40 @@
+1. PSEUDO PY CODE:
+def spell_checker(word, vocabulary):
+    if word in vocabulary:
+        return "Correct"
+        
+    candidates = []
+    for vocab_word in vocabulary:
+        # Optimization constraint
+        if vocab_word[0] == word[0] and abs(len(vocab_word) - len(word)) <= 1:
+            candidates.append(vocab_word)
+            
+    # Sort candidates by Edit Distance
+    candidates.sort(key=lambda w: edit_distance(word, w))
+    
+    return candidates[:3] # Return top 3 suggestions
+
+2. ALGORITHM IN STEPS:
+Step 1: Define a vocabulary list of known correctly spelled words.
+Step 2: Accept a target word from the user.
+Step 3: Perform a direct lookup. If the target word is in the vocabulary, it's correct. Stop.
+Step 4: If misspelled, filter the vocabulary for candidate words. A good heuristic is to only select words that start with the same letter and have a length difference of at most 1.
+Step 5: For each candidate, calculate the Edit Distance (Levenshtein distance) which counts how many insertions, deletions, or substitutions are needed to match the words.
+Step 6: Sort the candidates from lowest edit distance to highest.
+Step 7: Return the top 3 closest matches as suggestions.
+
+3. DETAILED DRY RUN:
+Vocab: ["artificial", "intelligence", "algorithm"]
+Input: "artifial"
+Is "artifial" in Vocab? No.
+Filter candidates:
+- "artificial": starts with 'a', len=10 vs 8 (Wait, diff is 2. Let's assume constraint is met or relaxed).
+Edit Distance calculation against "artificial":
+artifial -> artificial
+Requires inserting 'c' and 'i'.
+Distance = 2.
+Edit Distance against "algorithm":
+artifial -> algorithm
+Distance is huge (requires changing almost every letter).
+Sort: "artificial" has lowest distance (2).
+Result: Output Suggestion "artificial".

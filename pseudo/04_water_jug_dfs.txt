@@ -1,0 +1,41 @@
+1. PSEUDO PY CODE:
+def water_jug_dfs(cap_x, cap_y, goal):
+    stack = [(0, 0)]
+    visited = set()
+    
+    while stack:
+        x, y = stack.pop()
+        if x == goal or y == goal:
+            print("Goal Reached")
+            return
+            
+        if (x, y) not in visited:
+            visited.add((x, y))
+            stack.append((cap_x, y))        # Fill X
+            stack.append((x, cap_y))        # Fill Y
+            stack.append((0, y))            # Empty X
+            stack.append((x, 0))            # Empty Y
+            stack.append(pour(x, y, cap_y)) # Pour X to Y
+            stack.append(pour(y, x, cap_x)) # Pour Y to X
+
+2. ALGORITHM IN STEPS:
+Step 1: Initialize a stack with the initial state (0, 0) representing both jugs empty.
+Step 2: Initialize an empty 'visited' set to keep track of seen states.
+Step 3: Pop a state from the top of the stack.
+Step 4: Check if the state satisfies the goal condition. If yes, stop.
+Step 5: If the state has not been visited, add it to the visited set.
+Step 6: Generate all valid next states (Fill Jug1, Fill Jug2, Empty Jug1, Empty Jug2, Pour Jug1->Jug2, Pour Jug2->Jug1).
+Step 7: Push these new states onto the stack.
+Step 8: Repeat from Step 3 until stack is empty.
+
+3. DETAILED DRY RUN:
+Capacities: X=4, Y=3. Goal=2.
+Initial: Stack=[(0,0)], Visited={}
+Pop (0,0). Push all moves: (4,0), (0,3). Stack=[(4,0), (0,3)]. Visited={(0,0)}
+Pop (0,3). Push moves: (4,3), (0,0)[visited], (3,0)[Pour Y->X]. Stack=[(4,0), (4,3), (3,0)].
+Pop (3,0). Push moves: (3,3), (0,0)[visited]. Stack=[(4,0), (4,3), (3,3)].
+Pop (3,3). Push moves: (4,2)[Pour Y->X]. Stack=[(4,0), (4,3), (4,2)].
+Pop (4,2). Push moves: (0,2)[Empty X]. Stack=[(4,0), (4,3), (0,2)].
+Pop (0,2). Push moves: (2,0)[Pour Y->X]. Stack=[(4,0), (4,3), (2,0)].
+Pop (2,0). GOAL ACHIEVED! (X has 2).
+Path taken: (0,0)->(0,3)->(3,0)->(3,3)->(4,2)->(0,2)->(2,0).

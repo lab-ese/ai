@@ -1,0 +1,50 @@
+1. PSEUDO PY CODE:
+def solve_crossword(slots, index, word_list, assigned_words):
+    if index == len(slots):
+        return True
+        
+    current_slot = slots[index]
+    
+    for word in word_list:
+        if word not in assigned_words:
+            if len(word) == current_slot.length and satisfies_overlaps(word, current_slot):
+                assigned_words.add(word)
+                place_word(current_slot, word)
+                
+                if solve_crossword(slots, index + 1, word_list, assigned_words):
+                    return True
+                    
+                # Backtrack
+                remove_word(current_slot)
+                assigned_words.remove(word)
+                
+    return False
+
+2. ALGORITHM IN STEPS:
+Step 1: Identify all word slots (Horizontal/Vertical) and their required lengths and intersection points.
+Step 2: Base Case: If all slots are filled, return True.
+Step 3: Pick the next empty slot.
+Step 4: Iterate through the given list of words.
+Step 5: Check Constraints: The word must match the slot length, must not be used already, and character intersections with already placed words must match.
+Step 6: If constraints pass, place the word in the slot and mark it as used.
+Step 7: Recursively attempt to fill the remaining slots.
+Step 8: If it fails later on, backtrack: remove the word, mark it unused, and try the next word.
+
+3. DETAILED DRY RUN:
+Slots: H1 (Length 5). V1 (Length 5, intersects H1 at index 1).
+Word list: ["APPLE", "OPERA"]
+
+Try assigning "APPLE" to H1.
+H1 becomes A P P L E.
+Next slot V1. Intersects H1 at index 1. H1[1] is 'P'. So V1[0] must be 'P'.
+Try assigning "OPERA" to V1.
+Constraint check: Length 5 (Pass). "OPERA"[0] is 'O', but needs to be 'P'. Intersection fails!
+Backtrack: Remove "OPERA". No words left for V1.
+Backtrack: Remove "APPLE" from H1.
+
+Try assigning "OPERA" to H1.
+H1 becomes O P E R A.
+Next slot V1. H1[1] is 'P'. V1[0] must be 'P'.
+Try assigning "APPLE" to V1.
+Constraint check: Length 5 (Pass). "APPLE"[0] is 'A'. Fails!
+(Both combinations fail. In a real puzzle, a valid combo would satisfy the intersection).
