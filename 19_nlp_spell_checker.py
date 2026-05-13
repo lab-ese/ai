@@ -16,4 +16,6 @@ if __name__ == "__main__":
     test = input("Enter Word: ").lower()
     correct, sug = simple_spell_checker(test, vocab)
     if correct: print(f"'{test}' is correct.")
-    else: print(f"Misspelled. Suggestions: {', '.join(sug)}")
+    else: 
+        if not sug: print(f"'{test}' is misspelled and no suggestions found.")
+        else: print(f"Misspelled. Suggestions: {', '.join(sug)}")
